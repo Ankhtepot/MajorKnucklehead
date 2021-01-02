@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1995362976014437635}
   - component: {fileID: 1995362976014437632}
   - component: {fileID: 1995362976014437633}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -104,9 +104,9 @@ GameObject:
   - component: {fileID: 1995362976289769771}
   - component: {fileID: 6073941574947105266}
   - component: {fileID: 2136525748515949229}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: ProjectilePrototype
-  m_TagString: Untagged
+  m_TagString: PlayerDamage
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -154,5 +154,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10f78f1f7badcf741805b038252094d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rigidBody: {fileID: 6073941574947105266}
+  damageAmount: 1
   projectileSpeed: 2000
+  lifetime: 10
+  rigidBody: {fileID: 6073941574947105266}
+  Pool: {fileID: 0}

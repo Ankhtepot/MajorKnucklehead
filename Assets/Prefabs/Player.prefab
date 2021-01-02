@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1402488040290549770}
   - component: {fileID: 1402488040290549773}
   - component: {fileID: 1402488040290549772}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -102,7 +102,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1402488040355041686}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: TurretPivot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -137,7 +137,7 @@ GameObject:
   - component: {fileID: 1402488040424307700}
   - component: {fileID: 1402488040424307703}
   - component: {fileID: 1402488040424307702}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -230,7 +230,7 @@ GameObject:
   - component: {fileID: 1402488040555939609}
   - component: {fileID: 1402488040555939608}
   - component: {fileID: 1402488040555939611}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: TurretPrototype
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -322,11 +322,10 @@ GameObject:
   - component: {fileID: 1402488040741999757}
   - component: {fileID: 1402488040741999756}
   - component: {fileID: 1402488040741999759}
-  - component: {fileID: 1402488040741999754}
   - component: {fileID: 1402488040741999755}
   - component: {fileID: 1402488040741999752}
   - component: {fileID: 1402488040741999753}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -362,7 +361,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 124
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!114 &1402488040741999759
 MonoBehaviour:
@@ -380,20 +379,6 @@ MonoBehaviour:
   moveDrag: 1
   stopDrag: 10
   rigidBody: {fileID: 1402488040741999756}
---- !u!114 &1402488040741999754
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1402488040741999758}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36201dfe5671fab4dac5bde32ec9f3d7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bodyRotationSpeed: 20
-  playerBody: {fileID: 1402488041189579917}
 --- !u!135 &1402488040741999755
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -446,7 +431,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1402488041098390393}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Fire Point
   m_TagString: Untagged
   m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
@@ -479,7 +464,7 @@ GameObject:
   - component: {fileID: 1402488041189579912}
   - component: {fileID: 1402488041189579915}
   - component: {fileID: 1402488041189579914}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: BodyPrototype
   m_TagString: Untagged
   m_Icon: {fileID: 0}

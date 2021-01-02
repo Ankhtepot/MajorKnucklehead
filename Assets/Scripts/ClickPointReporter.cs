@@ -11,6 +11,7 @@ public class ClickPointReporter : MonoBehaviour
 #pragma warning disable 649
     [SerializeField] private GameObject plane;
     [SerializeField] public UnityCustomEvents.UnityVector3Event OnClick;
+    public LayerMask NonBLockingLayer;
     private Camera mainCamera;
 #pragma warning restore 649
 
