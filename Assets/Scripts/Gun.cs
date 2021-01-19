@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
+using Utilities;
 
 //Fireball Games * * * PetrZavodny.com
 
@@ -12,81 +10,35 @@ public class Gun : MonoBehaviour
     [SerializeField] Projectile projectile;
     [SerializeField] private Transform projectileSpawnPoint;
     [SerializeField] private ObjectPool Pool;
-    
-    private Camera mainCamera;
-    private Vector3 clickPosition = Vector3.zero;
+    [Range(0.1f, 5f)] [SerializeField] private float clickPosMultiplier = 5f;
+    [SerializeField] private Camera mainCamera;
 #pragma warning restore 649
 
-    void Start()
+    private void Update()
     {
-        initialize();
+        if (Input.GetMouseButtonDown(0))
+        {
+            OnShoot();
+        }
     }
 
-    void Update()
+    public void OnShoot()
     {
-        ManageInput();
-    }
+        var plane = new Plane(Vector3.back, transform.position);
+        var ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+        
+        if (!plane.Raycast(ray, out var hitDistance)) return;
 
-    private void ManageInput()
-    {
-        // if (Input.GetButtonDown("Fire1"))
-        // {
-        //     var newProjectile = Pool.GetFromPool(projectile, projectileSpawnPoint.position,
-        //         Quaternion.LookRotation(Input.mousePosition));
-        //     
-        //     var mousePosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
-        //     mousePosition.z = 0;
-        //     clickPosition = mousePosition;
-        //
-        //     var directionVector = (mousePosition - projectileSpawnPoint.position).normalized; 
-        //     print($"Cannon fires {projectile.name}. Direction vector: {directionVector}. Mouse position: {mousePosition}, Spawnpoint position: {projectileSpawnPoint.position}");
-        //     // newProjectile.damage = damage;
-        //     newProjectile.AddVelocity(directionVector.normalized);
-        // }
-    }
-
-    public void OnPlaneClicked(Vector3 clickPos)
-    {
-        var newProjectile = Pool.GetFromPool(projectile, projectileSpawnPoint.position,
-            Quaternion.LookRotation(Input.mousePosition));
+        var clickPos = ray.GetPoint(hitDistance);
+        
+        var spawnPosition = projectileSpawnPoint.position;
+        clickPos = clickPos.ZToZero() * clickPosMultiplier;
+        
+        var newProjectile = Pool.GetFromPool(projectile, spawnPosition, Quaternion.LookRotation(Input.mousePosition));
         newProjectile.Pool = Pool;
             
-        clickPosition = clickPos;
- 
-        var directionVector = (clickPos - projectileSpawnPoint.position).normalized;
-        // directionVector.z = 0;
-        // print($"Cannon fires {projectile.name}. Direction vector: {directionVector}. Click position: {clickPos}, Spawnpoint position: {projectileSpawnPoint.position}");
-        // newProjectile.damage = damage;
+        var directionVector = (clickPos - spawnPosition).normalized;
+        // print($"Cannon fires {projectile.name}. Direction vector: {directionVector}. Click position: {clickPos}, Spawnpoint position: {spawnPosition}");
         newProjectile.AddVelocity(directionVector.normalized);
-    }
-
-    // private void OnMouseDown()
-    // {
-    //     var ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-    //     var plane = new Plane(Vector3.back, Vector3.zero);
-    //     float distance;
-    //     RaycastHit hit;
-    //     if (plane.Raycast(ray, out distance))
-    //     {
-    //         Debug.Log("Plane Raycast hit at distance: " + distance);
-    //         var hitPoint = ray.GetPoint(distance);
-    //        
-    //         var go = GameObject.CreatePrimitive(PrimitiveType.Cube);
-    //         go.transform.position = hitPoint;
-    //         Debug.DrawRay (ray.origin, ray.direction * distance, Color.green);
-    //     }
-    // }
-
-    // private void OnDrawGizmos()
-    // {
-    //     if (clickPosition != Vector3.zero)
-    //     {
-    //         Gizmos.DrawLine(projectileSpawnPoint.position, clickPosition);
-    //     }
-    // }
-
-    private void initialize()
-    {
-        mainCamera = FindObjectOfType<Camera>();
     }
 }

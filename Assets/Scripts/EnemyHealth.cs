@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using Utilities;
 
 //Fireball Games * * * PetrZavodny.com
@@ -20,11 +17,6 @@ public class EnemyHealth : MonoBehaviour
     void Start()
     {
         initialize();
-    }
-
-    void Update()
-    {
-        
     }
 
     private void OnCollisionEnter(Collision other)

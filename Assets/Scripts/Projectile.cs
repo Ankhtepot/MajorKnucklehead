@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using UnityEngine;
 
 //Fireball Games * * * PetrZavodny.com
@@ -25,11 +23,6 @@ public class Projectile : MonoBehaviour
     {
         yield return new WaitForSeconds(lifetime);
         ReturnToPool();
-    }
-
-    void Update()
-    {
-        
     }
 
     private void OnCollisionEnter(Collision other)

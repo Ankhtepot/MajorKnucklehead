@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 //Fireball Games * * * PetrZavodny.com
 
@@ -37,13 +35,12 @@ public class PlayerTurnToMouse : MonoBehaviour
         // Raycasting to a Plane object only gives us a distance, so we'll have to take the distance,
         //   then find the point along that ray that meets that distance.  This will be the point
         //   to look at.
-        float hitdist = 0.0f;
-        
+
         // If the ray is parallel to the plane, Raycast will return false.
-        if (!playerPlane.Raycast(ray, out hitdist)) return;
+        if (!playerPlane.Raycast(ray, out var hitDistance)) return;
         
         // Get the point along the ray that hits the calculated distance.
-        var targetPoint = ray.GetPoint(hitdist);
+        var targetPoint = ray.GetPoint(hitDistance);
         
         // Determine the target rotation.  This is the rotation if the transform looks at the target point.
         var targetRotation = Quaternion.LookRotation(targetPoint - playerBody.position);

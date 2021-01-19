@@ -1,6 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using Utilities;
 
 //Fireball Games * * * PetrZavodny.com
 
@@ -14,11 +13,6 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Rigidbody rigidBody;
 #pragma warning restore 649
 
-    void Start()
-    {
-        initialize();
-    }
-
     void Update()
     {
         ManageInput();
@@ -26,7 +20,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void ManageInput()
     {
-        var xAxis = Input.GetAxis("Horizontal");
+        var xAxis = Input.GetAxis(Strings.Horizontal);
         if (xAxis != 0)
         {
             rigidBody.drag = moveDrag;
@@ -36,10 +30,5 @@ public class PlayerMovement : MonoBehaviour
         {
             rigidBody.drag = stopDrag;
         }
-    }
-
-    private void initialize()
-    {
-       
     }
 }

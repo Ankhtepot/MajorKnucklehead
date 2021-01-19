@@ -4,7 +4,7 @@ using UnityEngine;
 
 //Fireball Games * * * PetrZavodny.com
 
-public class MouseLookAt : MonoBehaviour
+public class MotherShipSpawner : MonoBehaviour
 {
 #pragma warning disable 649
     

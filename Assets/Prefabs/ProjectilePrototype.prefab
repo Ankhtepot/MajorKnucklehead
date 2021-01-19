@@ -156,6 +156,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damageAmount: 1
   projectileSpeed: 2000
-  lifetime: 10
+  lifetime: 1
   rigidBody: {fileID: 6073941574947105266}
   Pool: {fileID: 0}

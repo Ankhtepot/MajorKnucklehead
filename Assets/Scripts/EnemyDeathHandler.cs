@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 //Fireball Games * * * PetrZavodny.com
 
@@ -13,11 +11,6 @@ public class EnemyDeathHandler : MonoBehaviour
     void Start()
     {
         initialize();
-    }
-
-    void Update()
-    {
-        
     }
 
     public void HandleDeath()
