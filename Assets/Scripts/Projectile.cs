@@ -35,7 +35,7 @@ public class Projectile : MonoBehaviour, IPoolNeedy
 
     private void ReturnToPool()
     {
-        pool.ReturnToPool(this);
+        pool.ReturnToPool(gameObject);
     }
 
     public void AddVelocity(Vector3 force)

@@ -1,27 +1,26 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Interface;
 using UnityEngine;
+using Utilities;
 
 //Fireball Games * * * PetrZavodny.com
 
-public class Enemy : MonoBehaviour
+[RequireComponent(typeof(MoverToPosition))]
+public class Enemy : ExtendedMono, IMoveAfterSpawn
 {
 #pragma warning disable 649
-    
+    [HideInInspector] public bool onShootPosition;
+    private bool canShoot;
 #pragma warning restore 649
 
-    void Start()
+    public void InitializeMoving(PositionPointsManager positionManager)
     {
-        initialize();
+        positionManager.RequestFreePositionWhenAvailable(this);
     }
 
-    void Update()
+    public void StartMoving(Vector3 targetPosition)
     {
-        
-    }
-    
-    private void initialize()
-    {
-       
+        var mover = GetComponent<MoverToPosition>();
     }
 }

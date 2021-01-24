@@ -55,6 +55,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -79,6 +80,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &176430186388044967
 GameObject:
   m_ObjectHideFlags: 0
@@ -93,6 +95,7 @@ GameObject:
   - component: {fileID: 176430186388044962}
   - component: {fileID: 176430186388044961}
   - component: {fileID: 4199308929815059540}
+  - component: {fileID: 2305159044503432539}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -170,8 +173,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.047019, y: 2.004219, z: 13.902267}
-  m_Center: {x: 0.008860588, y: 0.0059070587, z: 0.073621035}
+  m_Size: {x: 1.047019, y: 2.004219, z: 3.8453417}
+  m_Center: {x: 0.008860588, y: 0.0059070587, z: -0.08110142}
 --- !u!114 &4199308929815059540
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -182,6 +185,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 250eb03423f48354d8c11f19828b350f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onShootPosition: 0
+--- !u!114 &2305159044503432539
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 176430186388044967}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d1287cf05bc48e3bd478d160f2e718c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &176430186561777813

@@ -11,7 +11,7 @@ namespace Utilities.ObjectPool
     {
 #pragma warning disable 649
         public List<PreSpawnSetItem> preSpawnSetItems;
-        private static readonly Dictionary<string, Queue<MonoBehaviour>> Pool = new Dictionary<string, Queue<MonoBehaviour>>();
+        private static readonly Dictionary<string, Queue<GameObject>> Pool = new Dictionary<string, Queue<GameObject>>();
 #pragma warning restore 649
 
         private void Start()
@@ -22,11 +22,11 @@ namespace Utilities.ObjectPool
             }
         }
 
-        public T GetFromPool<T>(T requestedType, Vector3 position, Quaternion rotation, GameObject parent = null) where T : MonoBehaviour
+        public GameObject GetFromPool(GameObject go, Vector3 position, Quaternion rotation, GameObject parent = null) 
         {
-            if (Pool.ContainsKey(requestedType.name) && Pool[requestedType.name].Any())
+            if (Pool.ContainsKey(go.name) && Pool[go.name].Any())
             {
-                var removedObject = Pool[requestedType.name].Dequeue() as T;
+                var removedObject = Pool[go.name].Dequeue();
                 // ReSharper disable once PossibleNullReferenceException
                 var removedObjectTransform = removedObject.transform;
                 removedObjectTransform.position = position;
@@ -36,14 +36,14 @@ namespace Utilities.ObjectPool
                 return ProcessInterfaces(removedObject);
             }
         
-            return InstantiateNewPoolObject(requestedType, position, rotation, parent);
+            return InstantiateNewPoolObject(go, position, rotation, parent);
         }
 
-        public void ReturnToPool<T>(T returningObject) where T : MonoBehaviour
+        public void ReturnToPool(GameObject returningObject)
         {
             if (!Pool.ContainsKey(returningObject.name))
             {
-                Pool.Add(returningObject.name, new Queue<MonoBehaviour>());
+                Pool.Add(returningObject.name, new Queue<GameObject>());
             }
 
             var returningObjectTransform = returningObject.transform;
@@ -54,20 +54,20 @@ namespace Utilities.ObjectPool
             Pool[returningObject.name].Enqueue(returningObject);
         }
 
-        private T InstantiateNewPoolObject<T>(T requestedType, Vector3 position, Quaternion rotation, GameObject parent, bool instantiateToDisabled = false) where T : MonoBehaviour
+        private GameObject InstantiateNewPoolObject(GameObject requestedObject, Vector3 position, Quaternion rotation, GameObject parent, bool instantiateToDisabled = false) 
         {
-            var newObject = ProcessInterfaces(Instantiate(requestedType, position, rotation, parent != null ? parent.transform : transform));
-            newObject.name = requestedType.name;
+            var newObject = ProcessInterfaces(Instantiate(requestedObject, position, rotation, parent != null ? parent.transform : transform));
+            newObject.name = requestedObject.name;
             
             if (instantiateToDisabled)
             {
-                newObject.gameObject.SetActive(false);
+                newObject.SetActive(false);
             }
                 
             return newObject;
         }
         
-        private T InstantiateNewPoolObject<T>(T objectToInstantiate, bool instantiateToDisabled = false) where T : MonoBehaviour
+        private GameObject InstantiateNewPoolObject(GameObject objectToInstantiate, bool instantiateToDisabled = false) 
         {
             var objectToInstantiateTransform = objectToInstantiate.transform;
             return InstantiateNewPoolObject(
@@ -75,9 +75,10 @@ namespace Utilities.ObjectPool
             );
         }
         
-        private T ProcessInterfaces<T>(T target) where T : MonoBehaviour
+        private GameObject ProcessInterfaces(GameObject target)
         {
-            if (target is IPoolNeedy needy)
+            var needy = target.GetComponent<IPoolNeedy>();
+            if (needy != null)
             {
                 if (!needy.pool)
                 {
@@ -85,10 +86,8 @@ namespace Utilities.ObjectPool
                 }
             }
 
-            if (target is IPoolInitializable initializable)
-            {
-                initializable.Initialize();
-            }
+            var initializable = target.GetComponent<IPoolInitializable>();
+            initializable?.Initialize();
 
             return target;
         }
@@ -110,7 +109,7 @@ namespace Utilities.ObjectPool
         [Serializable]
         public class PreSpawnSetItem
         {
-            public MonoBehaviour prefabGameObject;
+            public GameObject prefabGameObject;
             public int howMany;
         }
     }
