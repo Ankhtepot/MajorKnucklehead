@@ -21,7 +21,7 @@ public class EnemyDeathHandler : MonoBehaviour
     
     private void ReturnToPool()
     {
-        Pool.ReturnToPool(this);
+        Pool.ReturnToPool(gameObject);
     }
     
     private void initialize()

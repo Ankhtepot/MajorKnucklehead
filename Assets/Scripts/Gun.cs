@@ -1,7 +1,5 @@
-﻿using System;
-using Enumerations;
+﻿using Enumerations;
 using UnityEngine;
-using Utilities;
 using Utilities.Extensions;
 using Utilities.ObjectPool;
 
@@ -39,11 +37,11 @@ public class Gun : MonoBehaviour
         var spawnPosition = projectileSpawnPoint.position;
         clickPos = clickPos.ZToZero() * clickPosMultiplier;
         
-        var newProjectile = Pool.GetFromPool(projectile, spawnPosition, Quaternion.LookRotation(Input.mousePosition));
+        var newProjectile = Pool.GetFromPool(projectile.gameObject, spawnPosition, Quaternion.LookRotation(Input.mousePosition));
         // newProjectile.Pool = Pool;
             
         var directionVector = (clickPos - spawnPosition).normalized;
-        // print($"Cannon fires {projectile.name}. Direction vector: {directionVector}. Click position: {clickPos}, Spawnpoint position: {spawnPosition}");
-        newProjectile.AddVelocity(directionVector.normalized);
+        // print($"Cannon fires {projectile.name}. Direction vector: {directionVector}. Click position: {clickPos}, SpawnPoint position: {spawnPosition}");
+        newProjectile.GetComponent<Projectile>().AddVelocity(directionVector.normalized);
     }
 }
