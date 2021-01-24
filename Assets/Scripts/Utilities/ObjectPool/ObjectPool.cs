@@ -11,7 +11,7 @@ namespace Utilities.ObjectPool
     {
 #pragma warning disable 649
         public List<PreSpawnSetItem> preSpawnSetItems;
-        private static readonly Dictionary<Type, Queue<MonoBehaviour>> Pool = new Dictionary<Type, Queue<MonoBehaviour>>();
+        private static readonly Dictionary<string, Queue<MonoBehaviour>> Pool = new Dictionary<string, Queue<MonoBehaviour>>();
 #pragma warning restore 649
 
         private void Start()
@@ -24,9 +24,9 @@ namespace Utilities.ObjectPool
 
         public T GetFromPool<T>(T requestedType, Vector3 position, Quaternion rotation, GameObject parent = null) where T : MonoBehaviour
         {
-            if (Pool.ContainsKey(typeof(T)) && Pool[typeof(T)].Any())
+            if (Pool.ContainsKey(requestedType.name) && Pool[requestedType.name].Any())
             {
-                var removedObject = Pool[typeof(T)].Dequeue() as T;
+                var removedObject = Pool[requestedType.name].Dequeue() as T;
                 // ReSharper disable once PossibleNullReferenceException
                 var removedObjectTransform = removedObject.transform;
                 removedObjectTransform.position = position;
@@ -41,9 +41,9 @@ namespace Utilities.ObjectPool
 
         public void ReturnToPool<T>(T returningObject) where T : MonoBehaviour
         {
-            if (!Pool.ContainsKey(typeof(T)))
+            if (!Pool.ContainsKey(returningObject.name))
             {
-                Pool.Add(typeof(T), new Queue<MonoBehaviour>());
+                Pool.Add(returningObject.name, new Queue<MonoBehaviour>());
             }
 
             var returningObjectTransform = returningObject.transform;
@@ -51,13 +51,14 @@ namespace Utilities.ObjectPool
             returningObjectTransform.parent = transform;
             returningObject.gameObject.SetActive(false);
         
-            Pool[typeof(T)].Enqueue(returningObject);
+            Pool[returningObject.name].Enqueue(returningObject);
         }
 
         private T InstantiateNewPoolObject<T>(T requestedType, Vector3 position, Quaternion rotation, GameObject parent, bool instantiateToDisabled = false) where T : MonoBehaviour
         {
             var newObject = ProcessInterfaces(Instantiate(requestedType, position, rotation, parent != null ? parent.transform : transform));
-
+            newObject.name = requestedType.name;
+            
             if (instantiateToDisabled)
             {
                 newObject.gameObject.SetActive(false);
