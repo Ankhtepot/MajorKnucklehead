@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Enumerations;
+using UnityEngine;
 
 //Fireball Games * * * PetrZavodny.com
 
@@ -18,12 +19,15 @@ public class LookAtMouse : MonoBehaviour
 
     void Update()
     {
+        if (GameManager.CurrentGameState != GameState.Running) return;
+        
         var mouseRay = mainCamera.ScreenPointToRay(Input.mousePosition);
         float midPoint = (Cannon.position - mainCamera.transform.position).magnitude * midPointMultiplier;
         
         Cannon.LookAt(mouseRay.origin + mouseRay.direction * midPoint);
-
-        // Cannon.LookAt(mainCamera.ScreenToWorldPoint(Input.mousePosition)); // For orthographic camera
+    
+        // For orthographic camera
+        // Cannon.LookAt(mainCamera.ScreenToWorldPoint(Input.mousePosition)); 
     }
     
     private void initialize()

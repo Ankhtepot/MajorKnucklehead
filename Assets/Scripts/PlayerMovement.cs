@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Enumerations;
+using UnityEngine;
 using Utilities;
 
 //Fireball Games * * * PetrZavodny.com
@@ -20,6 +21,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void ManageInput()
     {
+        // if (GameManager.CurrentGameState != GameState.Running) return;
+        
         var xAxis = Input.GetAxis(Strings.Horizontal);
         if (xAxis != 0)
         {

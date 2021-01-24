@@ -1,6 +1,9 @@
 ﻿using System;
+using Enumerations;
 using UnityEngine;
 using Utilities;
+using Utilities.Extensions;
+using Utilities.ObjectPool;
 
 //Fireball Games * * * PetrZavodny.com
 
@@ -18,6 +21,8 @@ public class Gun : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
+            if (GameManager.CurrentGameState != GameState.Running) return;
+            
             OnShoot();
         }
     }
@@ -35,7 +40,7 @@ public class Gun : MonoBehaviour
         clickPos = clickPos.ZToZero() * clickPosMultiplier;
         
         var newProjectile = Pool.GetFromPool(projectile, spawnPosition, Quaternion.LookRotation(Input.mousePosition));
-        newProjectile.Pool = Pool;
+        // newProjectile.Pool = Pool;
             
         var directionVector = (clickPos - spawnPosition).normalized;
         // print($"Cannon fires {projectile.name}. Direction vector: {directionVector}. Click position: {clickPos}, Spawnpoint position: {spawnPosition}");

@@ -1,9 +1,10 @@
 ﻿using System.Collections;
 using UnityEngine;
+using Utilities.ObjectPool;
 
 //Fireball Games * * * PetrZavodny.com
 
-public class Projectile : MonoBehaviour
+public class Projectile : MonoBehaviour, IPoolNeedy
 {
 #pragma warning disable 649
     public int damageAmount = 1;
@@ -11,7 +12,8 @@ public class Projectile : MonoBehaviour
     [SerializeField] private float lifetime = 0.5f;
     [Header("Assignables")]
     [SerializeField] private Rigidbody rigidBody;
-    [HideInInspector] public ObjectPool Pool;
+
+    public ObjectPool pool { get; set; }
 #pragma warning restore 649
 
     void Start()
@@ -33,13 +35,13 @@ public class Projectile : MonoBehaviour
 
     private void ReturnToPool()
     {
-        Pool.ReturnToPool(this);
+        pool.ReturnToPool(this);
     }
 
     public void AddVelocity(Vector3 force)
     {
         StartCoroutine(StartLifeCooldown());
-        rigidBody.velocity = force * projectileSpeed * Time.deltaTime;
+        rigidBody.velocity = force * (projectileSpeed * Time.deltaTime);
     }
     
     private void initialize()
