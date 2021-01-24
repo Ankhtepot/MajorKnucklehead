@@ -11,7 +11,7 @@ namespace Utilities.ObjectPool
     {
 #pragma warning disable 649
         public List<PreSpawnSetItem> preSpawnSetItems;
-        private static readonly Dictionary<GameObject, Queue<GameObject>> Pool = new Dictionary<GameObject, Queue<GameObject>>();
+        private static readonly Dictionary<string, Queue<GameObject>> Pool = new Dictionary<string, Queue<GameObject>>();
 #pragma warning restore 649
 
         private void Start()
@@ -24,9 +24,9 @@ namespace Utilities.ObjectPool
 
         public GameObject GetFromPool(GameObject go, Vector3 position, Quaternion rotation, GameObject parent = null) 
         {
-            if (Pool.ContainsKey(go) && Pool[go].Any())
+            if (Pool.ContainsKey(go.name) && Pool[go.name].Any())
             {
-                var removedObject = Pool[go].Dequeue();
+                var removedObject = Pool[go.name].Dequeue();
                 // ReSharper disable once PossibleNullReferenceException
                 var removedObjectTransform = removedObject.transform;
                 removedObjectTransform.position = position;
@@ -41,9 +41,9 @@ namespace Utilities.ObjectPool
 
         public void ReturnToPool(GameObject returningObject)
         {
-            if (!Pool.ContainsKey(returningObject))
+            if (!Pool.ContainsKey(returningObject.name))
             {
-                Pool.Add(returningObject, new Queue<GameObject>());
+                Pool.Add(returningObject.name, new Queue<GameObject>());
             }
 
             var returningObjectTransform = returningObject.transform;
@@ -51,13 +51,14 @@ namespace Utilities.ObjectPool
             returningObjectTransform.parent = transform;
             returningObject.gameObject.SetActive(false);
         
-            Pool[returningObject].Enqueue(returningObject);
+            Pool[returningObject.name].Enqueue(returningObject);
         }
 
         private GameObject InstantiateNewPoolObject(GameObject requestedObject, Vector3 position, Quaternion rotation, GameObject parent, bool instantiateToDisabled = false) 
         {
             var newObject = ProcessInterfaces(Instantiate(requestedObject, position, rotation, parent != null ? parent.transform : transform));
-
+            newObject.name = requestedObject.name;
+            
             if (instantiateToDisabled)
             {
                 newObject.SetActive(false);

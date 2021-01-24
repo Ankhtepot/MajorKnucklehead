@@ -14,6 +14,9 @@ public class MotherShipSpawner : MonoBehaviour
 #pragma warning disable 649
     [SerializeField] private Transform spawnPoint;
     [SerializeField] private List<WaveConfiguration> EnemySpawnSequence;
+
+    private List<WaveConfiguration> enemyPool;
+    private int currentWaveConfigurationIndex = 0;
 #pragma warning restore 649
 
     private void Awake()
@@ -23,10 +26,22 @@ public class MotherShipSpawner : MonoBehaviour
 
     private void OnGameSessionStarted()
     {
-        if (EnemySpawnSequence.Any())
+        if (enemyPool.Any())
         {
-            
+            StartCoroutine(enemyPool[0].spawnInSequence 
+                ? SpawnEnemySequence(enemyPool[0]) 
+                : SpawnEnemySequenceRandom(enemyPool[0]));
         }
+    }
+
+    private IEnumerator SpawnEnemySequenceRandom(WaveConfiguration waveConfiguration)
+    {
+        yield return null;
+    }
+
+    private IEnumerator SpawnEnemySequence(WaveConfiguration waveConfiguration)
+    {
+        yield return null;
     }
 
     private void OnDisable()
@@ -38,5 +53,8 @@ public class MotherShipSpawner : MonoBehaviour
     {
         EventBroker.OnGameSessionStarted += OnGameSessionStarted;
         spawnPoint = spawnPoint.transform;
+        
+        enemyPool = new List<WaveConfiguration>();
+        enemyPool = EnemySpawnSequence;
     }
 }
