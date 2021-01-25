@@ -6,11 +6,11 @@ namespace Utilities
     {
         private Transform _transform;
 
-        public new Transform transform
+        protected new Transform transform
         {
             get
             {
-                if (_transform)
+                if (!_transform)
                 {
                     _transform = base.transform;
                 }

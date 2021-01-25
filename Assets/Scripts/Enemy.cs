@@ -21,6 +21,6 @@ public class Enemy : ExtendedMono, IMoveAfterSpawn
 
     public void StartMoving(Vector3 targetPosition)
     {
-        var mover = GetComponent<MoverToPosition>();
+        GetComponent<MoverToPosition>().StartMovingToPosition(targetPosition);
     }
 }

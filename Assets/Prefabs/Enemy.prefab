@@ -146,7 +146,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 739716582adb6ac4ca71bfd8a5ca62c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseHealthPoints: 10000
+  baseHealthPoints: 5
   currentHealthPoints: 0
   isDead: 0
   deathHandler: {fileID: 176430186388044962}
@@ -200,6 +200,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d1287cf05bc48e3bd478d160f2e718c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moveSpeed: 3
 --- !u!1 &176430186561777813
 GameObject:
   m_ObjectHideFlags: 0

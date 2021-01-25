@@ -528,6 +528,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd0560c8a959bba4ea5888697ae0fcca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  checkForFreePositionPeriod: 1
   positions: []
 --- !u!1 &420971399
 GameObject:
@@ -755,7 +756,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   preSpawnSetItems:
-  - prefabGameObject: {fileID: 2136525748515949229, guid: 1fda27f0d5dbf124bb5f9bee4e5117db,
+  - prefabGameObject: {fileID: 1995362976289769768, guid: 1fda27f0d5dbf124bb5f9bee4e5117db,
       type: 3}
     howMany: 8
 --- !u!4 &512942014
@@ -1074,9 +1075,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1606a997b36a1334594339ba9693ffe1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnPoint: {fileID: 439422473}
   EnemySpawnSequence:
   - {fileID: 11400000, guid: a111a2f90aad7024c85fd6e1dedba104, type: 2}
+  positionsManager: {fileID: 397093791}
+  spawnPoint: {fileID: 439422473}
+  pool: {fileID: 512942013}
 --- !u!1 &1270666684
 GameObject:
   m_ObjectHideFlags: 0

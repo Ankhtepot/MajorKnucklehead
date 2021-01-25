@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,7 +19,16 @@ public class MoverToPosition : ExtendedMono
     
     private IEnumerator MovingRoutine(Vector3 targetPosition)
     {
-        transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
-        yield return new WaitForEndOfFrame();
+        while (Vector3.SqrMagnitude(targetPosition - transform.position) > 0.1f)
+        {
+            Debug.Log("Started moving to position.");
+            transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
+            yield return new WaitForEndOfFrame();
+        }
+    }
+
+    private void OnDisable()
+    {
+        //TODO: free occupied position
     }
 }
