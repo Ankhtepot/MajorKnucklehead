@@ -56,8 +56,9 @@ namespace Utilities.ObjectPool
 
         private GameObject InstantiateNewPoolObject(GameObject requestedObject, Vector3 position, Quaternion rotation, GameObject parent, bool instantiateToDisabled = false) 
         {
-            var newObject = ProcessInterfaces(Instantiate(requestedObject, position, rotation, parent != null ? parent.transform : transform));
+            var newObject = Instantiate(requestedObject, position, rotation, parent != null ? parent.transform : transform);
             newObject.name = requestedObject.name;
+            newObject = ProcessInterfaces(newObject);
             
             if (instantiateToDisabled)
             {
@@ -77,12 +78,15 @@ namespace Utilities.ObjectPool
         
         private GameObject ProcessInterfaces(GameObject target)
         {
-            var needy = target.GetComponent<IPoolNeedy>();
-            if (needy != null)
-            {
-                if (!needy.pool)
+            var needy = target.GetComponents<IPoolNeedy>();
+            if (needy.Any())
+            { //TODO: FIX THIS
+                foreach (var poolNeedy in needy)
                 {
-                    needy.pool = this;
+                    if (!poolNeedy.pool)
+                    {
+                        poolNeedy.pool = this;
+                    }
                 }
             }
 

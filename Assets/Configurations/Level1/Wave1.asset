@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: Wave1
   m_EditorClassIdentifier: 
   EnemiesToSpawn:
-  - enemyPrefab: {fileID: 4199308929815059540, guid: 6beb316256ed8c949935c7f9776590d1,
+  - enemyPrefab: {fileID: 176430186388044967, guid: 6beb316256ed8c949935c7f9776590d1,
       type: 3}
-    spawnTimes: 3
+    spawnTimes: 30
   spawnInSequence: 1
   spawnInRegularIntervals: 1
   initialDelay: 1
-  timeBetweenSpawns: 1
+  timeBetweenSpawns: 3

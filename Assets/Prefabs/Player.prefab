@@ -56,6 +56,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -80,6 +81,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!65 &1402488040290549772
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -181,6 +183,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -205,6 +208,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!65 &1402488040424307702
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -274,6 +278,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -298,6 +303,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!65 &1402488040555939611
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -321,10 +327,12 @@ GameObject:
   m_Component:
   - component: {fileID: 1402488040741999757}
   - component: {fileID: 1402488040741999756}
-  - component: {fileID: 1402488040741999759}
   - component: {fileID: 1402488040741999755}
+  - component: {fileID: 1402488040741999759}
   - component: {fileID: 1402488040741999752}
   - component: {fileID: 1402488040741999753}
+  - component: {fileID: 2727259635207756239}
+  - component: {fileID: 7657730352177502857}
   m_Layer: 10
   m_Name: Player
   m_TagString: Untagged
@@ -363,6 +371,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!135 &1402488040741999755
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1402488040741999758}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1402488040741999759
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -379,19 +400,6 @@ MonoBehaviour:
   moveDrag: 1
   stopDrag: 10
   rigidBody: {fileID: 1402488040741999756}
---- !u!135 &1402488040741999755
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1402488040741999758}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1402488040741999752
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -404,7 +412,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4c443bd282746847b287e7d7b5c8cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Cannon: {fileID: 1402488041189579917}
+  observer: {fileID: 0}
   midPointMultiplier: 8
 --- !u!114 &1402488040741999753
 MonoBehaviour:
@@ -418,10 +426,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 178e3ac6efd260948a4a17057b41a815, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canShootCooldown: 0.1
   projectile: {fileID: 2136525748515949229, guid: 1fda27f0d5dbf124bb5f9bee4e5117db,
     type: 3}
   projectileSpawnPoint: {fileID: 1402488041098390393}
   Pool: {fileID: 0}
+  clickPosMultiplier: 5
+  mainCamera: {fileID: 0}
+--- !u!114 &2727259635207756239
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1402488040741999758}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f21fd4982ab734043a29f59aafb38596, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseHealthPoints: 20
+  currentHealthPoints: 0
+  isDead: 0
+  deathHandler: {fileID: 7657730352177502857}
+--- !u!114 &7657730352177502857
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1402488040741999758}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f48a1bd6205889146b5035cd4aa64ed9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1402488041098390392
 GameObject:
   m_ObjectHideFlags: 0
@@ -511,6 +550,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -535,6 +575,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!135 &1402488041189579914
 SphereCollider:
   m_ObjectHideFlags: 0

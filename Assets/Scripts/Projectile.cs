@@ -16,11 +16,6 @@ public class Projectile : MonoBehaviour, IPoolNeedy
     public ObjectPool pool { get; set; }
 #pragma warning restore 649
 
-    void Start()
-    {
-        initialize();
-    }
-
     private IEnumerator StartLifeCooldown()
     {
         yield return new WaitForSeconds(lifetime);
@@ -29,7 +24,7 @@ public class Projectile : MonoBehaviour, IPoolNeedy
 
     private void OnCollisionEnter(Collision other)
     {
-        print($"Projectile collided with: {other.gameObject.name}");
+        // print($"Projectile collided with: {other.gameObject.name}");
         ReturnToPool();
     }
 
@@ -38,14 +33,14 @@ public class Projectile : MonoBehaviour, IPoolNeedy
         pool.ReturnToPool(gameObject);
     }
 
-    public void AddVelocity(Vector3 force)
+    public void SetAndLaunch(Vector3 force, int projectileSpeedOverwrite = -1, float lifetimeOverwrite = -1)
     {
+        lifetime = lifetimeOverwrite > 0 ? lifetimeOverwrite : lifetime; 
+        
+        rigidBody.velocity = force * (
+            projectileSpeedOverwrite <= 0 ? projectileSpeed : projectileSpeedOverwrite
+            * Time.deltaTime);
+        
         StartCoroutine(StartLifeCooldown());
-        rigidBody.velocity = force * (projectileSpeed * Time.deltaTime);
-    }
-    
-    private void initialize()
-    {
-       
     }
 }

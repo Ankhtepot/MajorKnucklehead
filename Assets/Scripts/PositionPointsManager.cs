@@ -14,7 +14,7 @@ public class PositionPointsManager : MonoBehaviour
 #pragma warning disable 649
     [SerializeField] private float checkForFreePositionPeriod = 1f;
     [SerializeField] private List<PositionPoint> positions = new List<PositionPoint>();
-    private Queue<IMoveAfterSpawn> waitQueue = new Queue<IMoveAfterSpawn>();
+    [SerializeField] private Queue<IMoveAfterSpawn> waitQueue = new Queue<IMoveAfterSpawn>();
     private GameState currentGameState;
 #pragma warning restore 649
 
@@ -38,7 +38,7 @@ public class PositionPointsManager : MonoBehaviour
             {
                 var freePosition = positions.Find(position => !position.occupied);
                 freePosition.occupied = true;
-                waitQueue.Dequeue().StartMoving(freePosition.Position);
+                waitQueue.Dequeue().FreePositionAvailable(freePosition);
             }
         }
     }
@@ -72,7 +72,7 @@ public class PositionPointsManager : MonoBehaviour
 
 
     [Serializable]
-    private class PositionPoint
+    public class PositionPoint
     {
         public Transform transform;
         public bool occupied;
