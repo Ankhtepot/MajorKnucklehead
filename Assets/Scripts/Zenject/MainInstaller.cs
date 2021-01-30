@@ -1,3 +1,4 @@
+using Utilities.Managers;
 using Utilities.ObjectPool;
 
 namespace Zenject

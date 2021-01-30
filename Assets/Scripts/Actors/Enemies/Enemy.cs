@@ -1,7 +1,10 @@
 ﻿using DG.Tweening;
+using DTOs;
+using Enumerations;
 using Interface;
 using UnityEngine;
 using Utilities;
+using Utilities.Managers;
 
 //Fireball Games * * * PetrZavodny.com
 
@@ -9,7 +12,7 @@ namespace Actors.Enemies
 {
     [SelectionBase]
     [RequireComponent(typeof(MoverToPosition))]
-    public class Enemy : ExtendedMono, IMoveAfterSpawn
+    public class Enemy : ExtendedMono, IMoveToPointSubscriber
     {
 #pragma warning disable 649
         [SerializeField] private float routeMargin;
@@ -25,10 +28,10 @@ namespace Actors.Enemies
 
         public void InitializeMoving(PositionPointsManager positionManager)
         {
-            positionManager.RequestFreePositionWhenAvailable(this);
+            positionManager.RequestFreePositionWhenAvailable(this, PositionPointType.Ship);
         }
 
-        public void FreePositionAvailable(PositionPointsManager.PositionPoint targetPosition)
+        public void FreePositionAvailable(PositionPoint targetPosition)
         {
             if (!mover)
             {

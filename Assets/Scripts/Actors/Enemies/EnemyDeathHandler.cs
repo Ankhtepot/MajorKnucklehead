@@ -22,7 +22,7 @@ namespace Actors.Enemies
             ReturnToPool();
         }
     
-        private void ReturnToPool()
+        protected virtual void ReturnToPool()
         {
             pool.ReturnToPool(gameObject);
         }

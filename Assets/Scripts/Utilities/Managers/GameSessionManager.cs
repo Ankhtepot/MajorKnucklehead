@@ -9,7 +9,7 @@ namespace Utilities.Managers
         private void Awake()
         {
             EventBroker.OnSpawnerRegister += () => activeSpawners++;
-            EventBroker.OnSpawnerFinished += OnSpawnerUnregistered;
+            EventBroker.OnSpawnerUnregister += OnSpawnerUnregistered;
         }
 
         private void OnSpawnerUnregistered()
@@ -18,7 +18,7 @@ namespace Utilities.Managers
 
             if (activeSpawners == 0)
             {
-                EventBroker.TriggerAllSpawnersFinished();
+                EventBroker.TriggerOnAllSpawnersFinished(); //TODO: continue to end game session
             }
         }
     }

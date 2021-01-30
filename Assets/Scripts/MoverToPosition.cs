@@ -1,9 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DTOs;
 using UnityEngine;
 using UnityEngine.Events;
 using Utilities;
+using Utilities.Managers;
 
 //Fireball Games * * * PetrZavodny.com
 
@@ -13,15 +15,15 @@ public class MoverToPosition : ExtendedMono
     [SerializeField] private float moveSpeed = 10f;
     public UnityEvent OnPositionReached;
 
-    [SerializeField] private PositionPointsManager.PositionPoint positionPoint;
+    [SerializeField] private PositionPoint positionPoint;
 #pragma warning restore 649
 
-    public void StartMovingToPosition(PositionPointsManager.PositionPoint targetPosition)
+    public void StartMovingToPosition(PositionPoint targetPosition)
     {
         StartCoroutine(MovingRoutine(targetPosition));
     }
     
-    private IEnumerator MovingRoutine(PositionPointsManager.PositionPoint targetPosition)
+    private IEnumerator MovingRoutine(PositionPoint targetPosition)
     {
         positionPoint = targetPosition;
         // Debug.Log("Started moving to position.");

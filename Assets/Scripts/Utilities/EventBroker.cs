@@ -11,8 +11,8 @@ namespace Utilities
         public static UnityAction OnGameSessionStartRequested;
         public static UnityAction OnGameSessionStopped;
         public static UnityAction OnGameSessionStopRequested;
-        public static UnityAction OnSpawnerFinished;
         public static UnityAction OnSpawnerRegister;
+        public static UnityAction OnSpawnerUnregister;
         public static UnityAction OnAllSpawnersFinished;
         public static UnityAction<GameState, GameState> OnGameStateChanged;
 
@@ -29,10 +29,10 @@ namespace Utilities
         public static void TriggerOnGameStateChanged(GameState previousGameState, GameState currentGameState) 
             => OnGameStateChanged?.Invoke(previousGameState, currentGameState);
 
-        public static void TriggerSpawnerRegistering() => OnSpawnerRegister?.Invoke();
-        
-        public static void TriggerOnSpawnerFinished() => OnSpawnerFinished?.Invoke();
+        public static void TriggerOnSpawnerRegistering() => OnSpawnerRegister?.Invoke();
 
-        public static void TriggerAllSpawnersFinished() => OnAllSpawnersFinished?.Invoke();
+        public static void TriggerOnSpawnerUnregister() => OnSpawnerUnregister?.Invoke();
+        
+        public static void TriggerOnAllSpawnersFinished() => OnAllSpawnersFinished?.Invoke();
     }
 }

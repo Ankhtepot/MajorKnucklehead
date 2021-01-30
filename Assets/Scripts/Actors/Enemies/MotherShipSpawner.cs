@@ -5,15 +5,18 @@ using System.Linq;
 using Actors;
 using Actors.Enemies;
 using DTOs;
+using Enumerations;
+using Interface;
 using ScriptableObjects;
 using Unity.Mathematics;
 using UnityEngine;
 using Utilities;
+using Utilities.Managers;
 using Utilities.ObjectPool;
 
 //Fireball Games * * * PetrZavodny.com
 
-public class MotherShipSpawner : SpawnerMono
+public class MotherShipSpawner : SpawnerMono, IMoveToPointSubscriber
 {
 #pragma warning disable 649
     [SerializeField] private List<WaveConfiguration> EnemySpawnSequence;
@@ -26,6 +29,17 @@ public class MotherShipSpawner : SpawnerMono
     private List<WaveConfiguration> enemyPool;
     private int _currentWaveConfigurationIndex = 0;
 #pragma warning restore 649
+    
+    public void InitializeMoving(PositionPointsManager positionManager)
+    {
+        positionManager.RequestFreePositionWhenAvailable(this, PositionPointType.MotherShip);
+    }
+
+    public void FreePositionAvailable(PositionPoint targetPosition)
+    {
+        var mover = GetComponent<MoverToPosition>();
+        mover.StartMovingToPosition(targetPosition);
+    }
 
     private void Awake()
     {
@@ -81,6 +95,7 @@ public class MotherShipSpawner : SpawnerMono
     private void TriggerMotherShipMove()
     {
         print("Mother Ship starts approaching the player");
+        InitializeMoving(positionsManager);
     }
 
     private void OnDisable()
@@ -90,9 +105,10 @@ public class MotherShipSpawner : SpawnerMono
 
     private void initialize()
     {
-        EventBroker.TriggerSpawnerRegistering();
+        EventBroker.TriggerOnSpawnerRegistering();
         EventBroker.OnGameSessionStarted += OnGameSessionStarted;
         spawnPoint = spawnPoint.transform;
+        GetComponent<MotherShipDeathHandler>().pool = pool;
         pool = GameManager.Pool;
         
         enemyPool = new List<WaveConfiguration>();
