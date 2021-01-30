@@ -17,6 +17,8 @@ public class GameManager : MonoBehaviour
 #pragma warning disable 649
     
 #pragma warning restore 649
+    [Header("Managers")]
+    [SerializeField] private SceneLoader sceneLoader;
     [Header("Configurations")]
     [SerializeField] private List<ConfigurationBase> GameIniConfigurations = new List<ConfigurationBase>();
     
@@ -39,6 +41,11 @@ public class GameManager : MonoBehaviour
     }
 
     private void StartGameSession()
+    {
+        sceneLoader.LoadLevel("Level1", OnFirstLevelLoaded);
+    }
+
+    private void OnFirstLevelLoaded(AsyncOperation operation)
     {
         ChangeGameState(GameState.Running);
         EventBroker.TriggerOnGameSessionStarted();

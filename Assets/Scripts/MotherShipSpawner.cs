@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Actors;
 using Actors.Enemies;
 using DTOs;
 using ScriptableObjects;
@@ -12,7 +13,7 @@ using Utilities.ObjectPool;
 
 //Fireball Games * * * PetrZavodny.com
 
-public class MotherShipSpawner : MonoBehaviour
+public class MotherShipSpawner : SpawnerMono
 {
 #pragma warning disable 649
     [SerializeField] private List<WaveConfiguration> EnemySpawnSequence;
@@ -64,10 +65,22 @@ public class MotherShipSpawner : MonoBehaviour
             }
         }
 
-        if (enemyPool.Count - 1 <= _currentWaveConfigurationIndex) yield break;
-        
-        _currentWaveConfigurationIndex += 1;
-        StartCoroutine(SpawnEnemySequence(enemyPool[_currentWaveConfigurationIndex]));
+        if (enemyPool.Count - 1 > _currentWaveConfigurationIndex)
+        {
+            _currentWaveConfigurationIndex += 1;
+            StartCoroutine(SpawnEnemySequence(enemyPool[_currentWaveConfigurationIndex]));    
+        }
+        else
+        {
+            TriggerMotherShipMove();
+        }
+
+        yield return null;
+    }
+
+    private void TriggerMotherShipMove()
+    {
+        print("Mother Ship starts approaching the player");
     }
 
     private void OnDisable()
@@ -77,6 +90,7 @@ public class MotherShipSpawner : MonoBehaviour
 
     private void initialize()
     {
+        EventBroker.TriggerSpawnerRegistering();
         EventBroker.OnGameSessionStarted += OnGameSessionStarted;
         spawnPoint = spawnPoint.transform;
         pool = GameManager.Pool;
