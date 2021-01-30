@@ -6,7 +6,7 @@ namespace Zenject
     {
         public override void InstallBindings()
         {
-            Container.Bind<ObjectPool>().FromComponentInChildren().AsSingle();
+            Container.Bind<GameManager>().FromComponentInChildren().AsSingle();
         }
     }
 }

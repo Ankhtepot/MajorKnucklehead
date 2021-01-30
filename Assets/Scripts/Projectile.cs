@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
+using Utilities;
 using Utilities.ObjectPool;
 
 //Fireball Games * * * PetrZavodny.com
@@ -15,6 +17,11 @@ public class Projectile : MonoBehaviour, IPoolNeedy
 
     public ObjectPool pool { get; set; }
 #pragma warning restore 649
+
+    private void OnEnable()
+    {
+        EventBroker.OnGameSessionStopped += ReturnToPool;
+    }
 
     private IEnumerator StartLifeCooldown()
     {
@@ -42,5 +49,10 @@ public class Projectile : MonoBehaviour, IPoolNeedy
             * Time.deltaTime);
         
         StartCoroutine(StartLifeCooldown());
+    }
+
+    private void OnDisable()
+    {
+        EventBroker.OnGameSessionStopped -= ReturnToPool;
     }
 }

@@ -3,22 +3,25 @@ using Enumerations;
 using UnityEngine;
 using Utilities.Extensions;
 using Utilities.ObjectPool;
+using Zenject;
 
 //Fireball Games * * * PetrZavodny.com
 
 namespace Actors.Player
 {
-    public class Gun : MonoBehaviour
+    public class PlayerGun : MonoBehaviour, IPoolInitializable, IPoolNeedy
     {
 #pragma warning disable 649
         [SerializeField] private float canShootCooldown;
         [SerializeField] Projectile projectile;
         [SerializeField] private Transform projectileSpawnPoint;
-        [SerializeField] private ObjectPool Pool;
         [Range(0.1f, 5f)] [SerializeField] private float clickPosMultiplier = 5f;
         [SerializeField] private Camera mainCamera;
+        
+        public ObjectPool pool { get; set; }
 
         private bool canShoot = true;
+        private GameManager _gameManager;
 #pragma warning restore 649
 
         private void Update()
@@ -43,7 +46,7 @@ namespace Actors.Player
             var spawnPosition = projectileSpawnPoint.position;
             
             var distanceToClickPos = Vector3.SqrMagnitude(clickPos - spawnPosition);
-            print($"distanceToClickPos: {distanceToClickPos}");
+            // print($"distanceToClickPos: {distanceToClickPos}");
 
             if (distanceToClickPos < 7f) return;
         
@@ -51,13 +54,20 @@ namespace Actors.Player
             
             var directionVector = (clickPos - spawnPosition).normalized;
             // print($"Cannon fires {projectile.name}. Direction vector: {directionVector}. Click position: {clickPos}, SpawnPoint position: {spawnPosition}");
-            var newProjectile = Pool.GetFromPool(projectile.gameObject, spawnPosition, Quaternion.LookRotation(Input.mousePosition));
+            var newProjectile = pool.GetFromPool(projectile.gameObject, spawnPosition, Quaternion.LookRotation(Input.mousePosition));
             newProjectile.GetComponent<Projectile>().SetAndLaunch(directionVector);
         }
 
         private IEnumerator CanShootCooldownRoutine()
         {
             yield return new WaitForSeconds(canShootCooldown);
+            canShoot = true;
+        }
+
+        public void Initialize()
+        {
+            mainCamera = GameManager.MainCamera;
+            projectile = GameManager.AmmoManager.CurrentProjectile;
             canShoot = true;
         }
     }

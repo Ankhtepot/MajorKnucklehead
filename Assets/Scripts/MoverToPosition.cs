@@ -24,7 +24,7 @@ public class MoverToPosition : ExtendedMono
     private IEnumerator MovingRoutine(PositionPointsManager.PositionPoint targetPosition)
     {
         positionPoint = targetPosition;
-        Debug.Log("Started moving to position.");
+        // Debug.Log("Started moving to position.");
         
         while (Vector3.SqrMagnitude(targetPosition.Position - transform.position) > 0.01f)
         {

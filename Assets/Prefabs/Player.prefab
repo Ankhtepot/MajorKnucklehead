@@ -369,7 +369,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 124
   m_CollisionDetection: 0
 --- !u!135 &1402488040741999755
 SphereCollider:
@@ -412,7 +412,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4c443bd282746847b287e7d7b5c8cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  observer: {fileID: 0}
+  observer: {fileID: 1402488041189579917}
   midPointMultiplier: 8
 --- !u!114 &1402488040741999753
 MonoBehaviour:

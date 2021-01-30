@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 841d26b0310a499788d97d65022e0469, type: 3}
-  m_Name: Wave1
+  m_Name: Wave2
   m_EditorClassIdentifier: 
   EnemiesToSpawn:
   - enemyPrefab: {fileID: 176430186388044967, guid: 6beb316256ed8c949935c7f9776590d1,
       type: 3}
-    spawnTimes: 3
+    spawnTimes: 4
   spawnInSequence: 1
   spawnInRegularIntervals: 1
-  initialDelay: 1
+  initialDelay: 3
   timeBetweenSpawns: 1

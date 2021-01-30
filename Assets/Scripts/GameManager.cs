@@ -7,6 +7,8 @@ using Interface;
 using UnityEngine;
 using UnityEngine.Events;
 using Utilities;
+using Utilities.Managers;
+using Utilities.ObjectPool;
 
 //Fireball Games * * * PetrZavodny.com
 
@@ -15,15 +17,23 @@ public class GameManager : MonoBehaviour
 #pragma warning disable 649
     
 #pragma warning restore 649
-
+    [Header("Configurations")]
     [SerializeField] private List<ConfigurationBase> GameIniConfigurations = new List<ConfigurationBase>();
+    
     public UnityAction<GameState, GameState> OnGameStateChanged;
     public static GameState CurrentGameState => _currentGameState;
+    public static Camera MainCamera => _cameraManager.MainCamera;
+    public static AmmoManager AmmoManager => _ammoManager;
 
+    public static ObjectPool Pool => _pool;
+
+    private static CameraManager _cameraManager;
+    private static AmmoManager _ammoManager;
+    private static ObjectPool _pool;
     private static GameState _currentGameState;
     private GameState _previousGameState;
     
-    private void Start()
+    private void Awake()
     {
         initialize();
     }
@@ -69,9 +79,13 @@ public class GameManager : MonoBehaviour
     private void initialize()
     {
         GameIniConfigurations.ForEach(configuration => configuration.ActivateConfiguration());
-        var test = DOTween.defaultAutoKill;
+        _cameraManager = GetComponent<CameraManager>();
+        _ammoManager = GetComponent<AmmoManager>();
+        _pool = GetComponentInChildren<ObjectPool>();
+        
         EventBroker.OnGameSessionStartRequested += StartGameSession;
         EventBroker.OnGameSessionStopRequested += StopGameSession;
+        
         ChangeGameState(GameState.PreGameSession);
     }
 }
