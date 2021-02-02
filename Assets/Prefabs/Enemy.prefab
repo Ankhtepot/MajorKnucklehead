@@ -209,9 +209,7 @@ MonoBehaviour:
   OnPositionReached:
     m_PersistentCalls:
       m_Calls: []
-  positionPoint:
-    transform: {fileID: 0}
-    occupied: 0
+  positionPoint: {fileID: 0}
 --- !u!114 &6266664398234522803
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -225,8 +223,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shootCooldown: 2
-  projectileSpeed: 200
-  projectileLifetime: 30
+  projectileSpeed: 2
+  projectileLifetime: 7
   projectilePrefab: {fileID: 4585310302395350904, guid: 36b4c2f84207f844cbcabf7930376f03,
     type: 3}
   projectileSpawnPoint: {fileID: 9030379883531950413}

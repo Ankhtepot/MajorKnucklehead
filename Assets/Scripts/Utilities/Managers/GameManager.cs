@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Enumerations;
 using Interface;
@@ -12,49 +13,49 @@ namespace Utilities.Managers
     public class GameManager : MonoBehaviour
     {
 #pragma warning disable 649
-    
-#pragma warning restore 649
         [Header("Managers")]
         [SerializeField] private SceneLoader sceneLoader;
+        [SerializeField] private GameSessionManager gameSessionManager;
+        [SerializeField] private UIManager uiManager;
         [Header("Configurations")]
         [SerializeField] private List<ConfigurationBase> GameIniConfigurations = new List<ConfigurationBase>();
+        [Header("Game Loop Setup")]
+        [SerializeField] private float gameSessionToMenuDelay = 2f;
     
-        public UnityAction<GameState, GameState> OnGameStateChanged;
         public static GameState CurrentGameState => _currentGameState;
         public static Camera MainCamera => _cameraManager.MainCamera;
         public static AmmoManager AmmoManager => _ammoManager;
+        public GameSessionManager GameSessionManager => gameSessionManager;
+        
+        public static PositionPointsManager PositionManager
+        {
+            get
+            {
+                if (!positionManager)
+                {
+                    positionManager = FindObjectOfType<PositionPointsManager>();
+                }
 
+                return positionManager;
+            }
+        }
+
+        public SceneLoader SceneLoader => sceneLoader;
         public static ObjectPool.ObjectPool Pool => _pool;
-
         private static CameraManager _cameraManager;
         private static AmmoManager _ammoManager;
+        private static PositionPointsManager positionManager;
         private static ObjectPool.ObjectPool _pool;
         private static GameState _currentGameState;
         private GameState _previousGameState;
+#pragma warning restore 649
     
         private void Awake()
         {
             initialize();
         }
-
-        private void StartGameSession()
-        {
-            sceneLoader.LoadLevel("Level1", OnFirstLevelLoaded);
-        }
-
-        private void OnFirstLevelLoaded(AsyncOperation operation)
-        {
-            ChangeGameState(GameState.Running);
-            EventBroker.TriggerOnGameSessionStarted();
-        }
-
-        private void StopGameSession()
-        {
-            ChangeGameState(GameState.PreGameSession);
-            EventBroker.TriggerOnGameSessionStopped();
-        }
     
-        private void ChangeGameState(GameState newGameState)
+        public void ChangeGameState(GameState newGameState)
         {
             _previousGameState = _currentGameState;
             _currentGameState = newGameState;
@@ -79,16 +80,51 @@ namespace Utilities.Managers
                 EventBroker.TriggerOnGameStateChanged(_previousGameState, _currentGameState);
             }
         }
-    
+        
+        private void StopGameSession()
+        {
+            StartCoroutine(PostSessionRoutine(true));
+        }
+
+        private void ProcessAllEnemiesInLevelKilled()
+        {
+            print("[Game Manager] All enemies killed, game session should end.");
+            StartCoroutine(PostSessionRoutine());
+        }
+
+        private IEnumerator PostSessionRoutine(bool endImmediately = false)
+        {
+            yield return new WaitForSeconds(endImmediately ? 0f : gameSessionToMenuDelay);
+            sceneLoader.UnloadCurrentLevel();
+            ChangeGameState(GameState.PreGameSession);
+            EventBroker.TriggerOnGameSessionStopped();
+        }
+
+        private void OnSceneLoaded()
+        {
+            positionManager = FindObjectOfType<PositionPointsManager>();
+        }
+
+        private void OnDisable()
+        {
+            EventBroker.OnGameSessionStartRequested -= gameSessionManager.StartGameSession;
+            EventBroker.OnGameSessionStopRequested -= StopGameSession;
+            EventBroker.OnAllEnemiesInLevelKilled -= ProcessAllEnemiesInLevelKilled;
+            EventBroker.OnSceneLoaded -= OnSceneLoaded;
+        }
+
         private void initialize()
         {
             GameIniConfigurations.ForEach(configuration => configuration.ActivateConfiguration());
             _cameraManager = GetComponent<CameraManager>();
             _ammoManager = GetComponent<AmmoManager>();
             _pool = GetComponentInChildren<ObjectPool.ObjectPool>();
+            uiManager.gameSessionManager = gameSessionManager;
         
-            EventBroker.OnGameSessionStartRequested += StartGameSession;
+            EventBroker.OnGameSessionStartRequested += gameSessionManager.StartGameSession;
             EventBroker.OnGameSessionStopRequested += StopGameSession;
+            EventBroker.OnAllEnemiesInLevelKilled += ProcessAllEnemiesInLevelKilled;
+            EventBroker.OnSceneLoaded += OnSceneLoaded;
         
             ChangeGameState(GameState.PreGameSession);
         }

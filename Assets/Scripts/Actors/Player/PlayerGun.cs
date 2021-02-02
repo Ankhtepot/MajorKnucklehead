@@ -16,7 +16,7 @@ namespace Actors.Player
         [SerializeField] private float canShootCooldown;
         [SerializeField] Projectile projectile;
         [SerializeField] private Transform projectileSpawnPoint;
-        [Range(0.1f, 5f)] [SerializeField] private float clickPosMultiplier = 5f;
+        // [Range(0.1f, 5f)] [SerializeField] private float clickPosMultiplier = 5f; // TODO: can be used once I figure out vector math for it
         [SerializeField] private Camera mainCamera;
         
         public ObjectPool pool { get; set; }

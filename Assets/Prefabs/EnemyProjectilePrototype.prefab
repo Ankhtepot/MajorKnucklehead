@@ -62,8 +62,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageAmount: 1
-  projectileSpeed: 20
-  lifetime: 20
+  projectileSpeed: 2
+  lifetime: 7
   rigidBody: {fileID: 8095298178388303778}
 --- !u!1 &4585310302673828695
 GameObject:

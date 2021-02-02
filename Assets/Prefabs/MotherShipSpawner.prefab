@@ -80,10 +80,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1606a997b36a1334594339ba9693ffe1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  scoreValue: 100
+  spawnPoint: {fileID: 5985060870371938301}
   EnemySpawnSequence:
   - {fileID: 11400000, guid: a111a2f90aad7024c85fd6e1dedba104, type: 2}
-  positionsManager: {fileID: 0}
-  spawnPoint: {fileID: 5985060870371938301}
+  deathHandler: {fileID: 5985060869679013518}
 --- !u!114 &5985060869679013517
 MonoBehaviour:
   m_ObjectHideFlags: 0

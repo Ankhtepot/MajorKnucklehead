@@ -1,116 +1,100 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Actors;
-using Actors.Enemies;
 using DTOs;
 using Enumerations;
 using Interface;
 using ScriptableObjects;
 using Unity.Mathematics;
 using UnityEngine;
-using Utilities;
+using UnityEngine.EventSystems;
 using Utilities.Managers;
-using Utilities.ObjectPool;
 
 //Fireball Games * * * PetrZavodny.com
 
-public class MotherShipSpawner : SpawnerMono, IMoveToPointSubscriber
+namespace Actors.Enemies
 {
+    public class MotherShipSpawner : SpawnerMono
+    {
 #pragma warning disable 649
-    [SerializeField] private List<WaveConfiguration> EnemySpawnSequence;
+        [SerializeField] private List<WaveConfiguration> EnemySpawnSequence;
 
-    [Header("Assignables")] [SerializeField]
-    private PositionPointsManager positionsManager;
-    [SerializeField] private Transform spawnPoint;
+        [Header("Assignables")]
+        [SerializeField] private MotherShipDeathHandler deathHandler;
 
-    private ObjectPool pool;
-    private List<WaveConfiguration> enemyPool;
-    private int _currentWaveConfigurationIndex = 0;
+        private List<WaveConfiguration> enemyPool;
+        private int _currentWaveConfigurationIndex;
 #pragma warning restore 649
     
-    public void InitializeMoving(PositionPointsManager positionManager)
-    {
-        positionManager.RequestFreePositionWhenAvailable(this, PositionPointType.MotherShip);
-    }
-
-    public void FreePositionAvailable(PositionPoint targetPosition)
-    {
-        var mover = GetComponent<MoverToPosition>();
-        mover.StartMovingToPosition(targetPosition);
-    }
-
-    private void Awake()
-    {
-        initialize();
-    }
-
-    private void OnGameSessionStarted()
-    {
-        enemyPool = EnemySpawnSequence;
-        
-        if (enemyPool.Any())
+        public override void InitializeMoving(PositionPointsManager positionManager)
         {
-            StartCoroutine(enemyPool[0].spawnInSequence 
-                ? SpawnEnemySequence(enemyPool[0]) 
-                : SpawnEnemySequenceRandom(enemyPool[0]));
+            positionManager.RequestFreePositionWhenAvailable(this, PositionPointType.MotherShipAtPlayer);
         }
-    }
 
-    private IEnumerator SpawnEnemySequenceRandom(WaveConfiguration waveConfiguration)
-    {
-        //TODO: write this method
-        yield return null;
-    }
-
-    private IEnumerator SpawnEnemySequence(WaveConfiguration waveConfiguration)
-    {
-        yield return new WaitForSeconds(waveConfiguration.initialDelay);
-
-        foreach (var sequence in waveConfiguration.EnemiesToSpawn)
+        public override void FreePositionAvailable(PositionPoint targetPosition)
         {
-            var enemyToSpawn = sequence.enemyPrefab.gameObject;
-            for (int i = 0; i < sequence.spawnTimes; i++)
+            var mover = GetComponent<MoverToPosition>();
+            mover.StartMovingToPosition(targetPosition);
+        }
+
+        protected override void Awake()
+        {
+            base.Awake();
+            
+            deathHandler.pool = pool;
+            enemyPool = new List<WaveConfiguration>();
+        }
+
+        protected override void OnGameSessionStarted()
+        {
+            enemyPool = EnemySpawnSequence;
+        
+            if (enemyPool.Any())
             {
-                var spawnedEnemy = pool.GetFromPool(enemyToSpawn, spawnPoint.position, quaternion.identity);
-                spawnedEnemy.GetComponent<Enemy>().InitializeMoving(positionsManager);
-                yield return new WaitForSeconds(waveConfiguration.timeBetweenSpawns);
+                StartCoroutine(enemyPool[0].spawnInSequence 
+                    ? SpawnEnemySequence(enemyPool[0]) 
+                    : SpawnEnemySequenceRandom(enemyPool[0]));
             }
         }
 
-        if (enemyPool.Count - 1 > _currentWaveConfigurationIndex)
+        private IEnumerator SpawnEnemySequenceRandom(WaveConfiguration waveConfiguration)
         {
-            _currentWaveConfigurationIndex += 1;
-            StartCoroutine(SpawnEnemySequence(enemyPool[_currentWaveConfigurationIndex]));    
-        }
-        else
-        {
-            TriggerMotherShipMove();
+            //TODO: write this method
+            yield return null;
         }
 
-        yield return null;
-    }
+        private IEnumerator SpawnEnemySequence(WaveConfiguration waveConfiguration)
+        {
+            yield return new WaitForSeconds(waveConfiguration.initialDelay);
 
-    private void TriggerMotherShipMove()
-    {
-        print("Mother Ship starts approaching the player");
-        InitializeMoving(positionsManager);
-    }
+            foreach (var sequence in waveConfiguration.EnemiesToSpawn)
+            {
+                var enemyToSpawn = sequence.enemyPrefab.gameObject;
+                for (int i = 0; i < sequence.spawnTimes; i++)
+                {
+                    var spawnedEnemy = pool.GetFromPool(enemyToSpawn, spawnPoint.position, quaternion.identity);
+                    spawnedEnemy.GetComponent<Enemy>().InitializeMoving(positionsManager);
+                    yield return new WaitForSeconds(waveConfiguration.timeBetweenSpawns);
+                }
+            }
 
-    private void OnDisable()
-    {
-        EventBroker.OnGameSessionStarted -= OnGameSessionStarted;
-    }
+            if (enemyPool.Count - 1 > _currentWaveConfigurationIndex)
+            {
+                _currentWaveConfigurationIndex += 1;
+                StartCoroutine(SpawnEnemySequence(enemyPool[_currentWaveConfigurationIndex]));    
+            }
+            else
+            {
+                TriggerMotherShipMove();
+            }
 
-    private void initialize()
-    {
-        EventBroker.TriggerOnSpawnerRegistering();
-        EventBroker.OnGameSessionStarted += OnGameSessionStarted;
-        spawnPoint = spawnPoint.transform;
-        GetComponent<MotherShipDeathHandler>().pool = pool;
-        pool = GameManager.Pool;
-        
-        enemyPool = new List<WaveConfiguration>();
+            yield return null;
+        }
+
+        private void TriggerMotherShipMove()
+        {
+            print("Mother Ship starts approaching the player");
+            InitializeMoving(positionsManager);
+        }
     }
 }

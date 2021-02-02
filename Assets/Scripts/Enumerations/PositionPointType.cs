@@ -6,6 +6,7 @@ namespace Enumerations
     public enum PositionPointType
     {
         Ship = 1,
-        MotherShip = 2,
+        MotherShipAtPlayer = 2,
+        MotherShipFromPortal = 4
     }
 }

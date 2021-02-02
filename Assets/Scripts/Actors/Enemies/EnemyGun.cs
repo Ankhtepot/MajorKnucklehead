@@ -1,9 +1,7 @@
-using System;
 using System.Collections;
 using UnityEngine;
 using Utilities;
 using Utilities.ObjectPool;
-using Zenject;
 
 //Fireball Games * * * PetrZavodny.com
 
@@ -42,7 +40,7 @@ namespace Actors.Enemies
                 yield return new WaitForSeconds(shootCooldown);
 
                 var newProjectile = pool.GetFromPool(projectilePrefab, projectileSpawnPoint.position, Quaternion.LookRotation(Vector3.down)).GetComponent<Projectile>();
-                // newProjectile.SetAndLaunch(Vector3.down, projectileSpeed, projectileLifetime);
+                newProjectile.SetAndLaunch(Vector3.down, projectileSpeed, projectileLifetime);
             }
         }
 

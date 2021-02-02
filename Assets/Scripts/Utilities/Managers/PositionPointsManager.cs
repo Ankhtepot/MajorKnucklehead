@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using DTOs;
@@ -37,7 +36,7 @@ namespace Utilities.Managers
                 yield return new WaitForSeconds(checkForFreePositionPeriod);
 
                DequeByPositionType(PositionPointType.Ship);
-               DequeByPositionType(PositionPointType.MotherShip);
+               DequeByPositionType(PositionPointType.MotherShipAtPlayer);
             }
         }
 
@@ -55,20 +54,7 @@ namespace Utilities.Managers
         {
             waitQueue[positionType].Enqueue(subscriber);
         }    
-    
-        private void initialize()
-        {
-            waitQueue = new Dictionary<PositionPointType, Queue<IMoveToPointSubscriber>>()
-            {
-                {PositionPointType.Ship, new Queue<IMoveToPointSubscriber>()}, 
-                {PositionPointType.MotherShip, new Queue<IMoveToPointSubscriber>()}, 
-            };
-            
-            EventBroker.OnGameStateChanged += OnGameStateChanged;
-
-            positions = GetComponentsInChildren<PositionPoint>().ToList();
-        }
-
+        
         private void OnGameStateChanged(GameState previousState, GameState currentState)
         {
             currentGameState = currentState;
@@ -81,15 +67,22 @@ namespace Utilities.Managers
             }
         }
 
+        private void OnDisable()
+        {
+            EventBroker.OnGameStateChanged -= OnGameStateChanged;
+        }
 
-        // [Serializable]
-        // public class PositionPoint
-        // {
-        //     public Transform transform;
-        //     public bool occupied;
-        //     public PositionPointType positionType;
-        //
-        //     public Vector3 Position => transform.position;
-        // }
+        private void initialize()
+        {
+            waitQueue = new Dictionary<PositionPointType, Queue<IMoveToPointSubscriber>>()
+            {
+                {PositionPointType.Ship, new Queue<IMoveToPointSubscriber>()}, 
+                {PositionPointType.MotherShipAtPlayer, new Queue<IMoveToPointSubscriber>()}, 
+            };
+            
+            EventBroker.OnGameStateChanged += OnGameStateChanged;
+
+            positions = GetComponentsInChildren<PositionPoint>().ToList();
+        }
     }
 }
