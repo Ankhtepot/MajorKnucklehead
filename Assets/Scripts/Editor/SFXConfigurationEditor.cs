@@ -10,11 +10,10 @@ namespace Editor
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
-            // DrawDefaultInspector();
 
             if (GUILayout.Button("PlayTest audioClip"))
             {
-                (target as SFXConfiguration).PlayClip();
+                (target as SFXConfiguration)?.PlayClip();
             }
 
         }

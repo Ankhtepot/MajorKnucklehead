@@ -19,6 +19,7 @@ namespace Utilities
         public static UnityAction<GameState, GameState> OnGameStateChanged;
         public static UnityAction<int> OnScoreGained;
         public static UnityAction<int> OnScoreChanged;
+        public static UnityAction<AudioClipPurpose> OnPlayAudioRequested;
 
         // Callers
 
@@ -34,7 +35,7 @@ namespace Utilities
         public static void TriggerOnGameStateChanged(GameState previousGameState, GameState currentGameState) 
             => OnGameStateChanged?.Invoke(previousGameState, currentGameState);
         public static void TriggerOnScoreGained(int score) => OnScoreGained?.Invoke(score);
-
         public static void TriggerOnScoreChanged(int sessionStatisticsScore) => OnScoreChanged?.Invoke(sessionStatisticsScore);
+        public static void TriggerOnPlayAudioRequested(AudioClipPurpose purpose) => OnPlayAudioRequested?.Invoke(purpose);
     }
 }

@@ -21,12 +21,15 @@ namespace Actors.Player
         {
             EventBroker.OnGameSessionStarted += OnGameSessionStarted;
             EventBroker.OnGameSessionStopped += OnGameSessionStopped;
-            
-            _pool = GameManager.Pool;
         }
 
         private void OnGameSessionStarted()
         {
+            if (!_pool)
+            {
+                _pool = GameManager.Pool;
+            }
+            
             _spawnedPlayer = _pool.GetFromPool(playerPrefab, Vector3.zero, quaternion.identity);
         }
 

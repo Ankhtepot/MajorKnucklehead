@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5985060869532406858}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: MotheShipPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -45,7 +45,7 @@ GameObject:
   - component: {fileID: 5985060869679013516}
   - component: {fileID: 5985060869679013507}
   - component: {fileID: 5985060869679013518}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: MotherShipSpawner
   m_TagString: Untagged
   m_Icon: {fileID: -5397416234189338067, guid: 0000000000000000d000000000000000, type: 0}
@@ -154,7 +154,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5985060870371938301}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Spawn Point
   m_TagString: Untagged
   m_Icon: {fileID: 4422084297763085224, guid: 0000000000000000d000000000000000, type: 0}
@@ -184,7 +184,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5985060870609313353}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -217,7 +217,7 @@ GameObject:
   - component: {fileID: 5985060870830328561}
   - component: {fileID: 5985060870830328572}
   - component: {fileID: 5985060870830328563}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -1,4 +1,5 @@
 using System.Collections;
+using Enumerations;
 using UnityEngine;
 using Utilities;
 using Utilities.ObjectPool;
@@ -41,6 +42,8 @@ namespace Actors.Enemies
 
                 var newProjectile = pool.GetFromPool(projectilePrefab, projectileSpawnPoint.position, Quaternion.LookRotation(Vector3.down)).GetComponent<Projectile>();
                 newProjectile.SetAndLaunch(Vector3.down, projectileSpeed, projectileLifetime);
+                
+                EventBroker.TriggerOnPlayAudioRequested(AudioClipPurpose.EnemyBomb);
             }
         }
 

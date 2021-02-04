@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 13028ee5e4444c9ea0ea497455b9234c, type: 3}
-  m_Name: PlayerShootSFX
+  m_Name: EnemyBombSFX
   m_EditorClassIdentifier: 
-  audioClip: {fileID: 8300000, guid: 7455cf6d130c49548b887c701e8c0b1e, type: 3}
-  clipPurpose: 0
-  volumeRange: {x: 0.11, y: 0.3702404}
-  pitchRange: {x: 0.92, y: 1}
+  audioClip: {fileID: 8300000, guid: a001dbfcebcb57b4f9020177a51444c6, type: 3}
+  clipPurpose: 1
+  volumeRange: {x: 0.3, y: 0.4}
+  pitchRange: {x: 0.3, y: 0.6}

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using Enumerations;
 using UnityEngine;
+using Utilities;
 using Utilities.Extensions;
 using Utilities.Managers;
 using Utilities.ObjectPool;
@@ -56,6 +57,8 @@ namespace Actors.Player
             // print($"Cannon fires {projectile.name}. Direction vector: {directionVector}. Click position: {clickPos}, SpawnPoint position: {spawnPosition}");
             var newProjectile = pool.GetFromPool(projectile.gameObject, spawnPosition, Quaternion.LookRotation(Input.mousePosition));
             newProjectile.GetComponent<Projectile>().SetAndLaunch(directionVector);
+            
+            EventBroker.TriggerOnPlayAudioRequested(AudioClipPurpose.Weapon1);
         }
 
         private IEnumerator CanShootCooldownRoutine()
