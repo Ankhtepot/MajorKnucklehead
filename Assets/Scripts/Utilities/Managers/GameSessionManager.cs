@@ -29,8 +29,8 @@ namespace Utilities.Managers
         
         public void StartGameSession()
         {
+            sessionStatistics = new GameSessionStatistics(); //TODO: add per level statistics in the future
             activeSpawnersCount = 0;
-            EventBroker.TriggerOnScoreGained(0);
             gameManager.SceneLoader.LoadLevelByLevelNumber(1, OnFirstLevelLoaded);
         }
 
@@ -52,7 +52,6 @@ namespace Utilities.Managers
         private void OnSceneUnloaded()
         {
             activeSpawnersCount = 0;
-            sessionStatistics = new GameSessionStatistics(); //TODO: add per level statistics in the future
             StopAllCoroutines();
         }
 
@@ -72,7 +71,7 @@ namespace Utilities.Managers
                 _foundEnemies = FindObjectsOfType<Enemy>().Length;
             }
             
-            EventBroker.TriggerOnAllEnemiesInLevelKilled();
+            EventBroker.TriggerOnWinConditionMet();
         }
 
         private void OnDisable()

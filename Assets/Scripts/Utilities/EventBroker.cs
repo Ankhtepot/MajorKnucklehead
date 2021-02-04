@@ -13,7 +13,7 @@ namespace Utilities
         public static UnityAction OnGameSessionStopRequested;
         public static UnityAction OnSpawnerRegister;
         public static UnityAction OnSpawnerUnregister;
-        public static UnityAction OnAllEnemiesInLevelKilled;
+        public static UnityAction OnWinConditionMet;
         public static UnityAction OnSceneLoaded;
         public static UnityAction OnSceneUnloaded;
         public static UnityAction<GameState, GameState> OnGameStateChanged;
@@ -28,7 +28,7 @@ namespace Utilities
         public static void TriggerOnGameSessionStopRequested() => OnGameSessionStopRequested?.Invoke();
         public static void TriggerOnSpawnerRegistering() => OnSpawnerRegister?.Invoke();
         public static void TriggerOnSpawnerUnregister() => OnSpawnerUnregister?.Invoke();
-        public static void TriggerOnAllEnemiesInLevelKilled() => OnAllEnemiesInLevelKilled?.Invoke();
+        public static void TriggerOnWinConditionMet() => OnWinConditionMet?.Invoke();
         public static void TriggerOnSceneLoaded() => OnSceneLoaded?.Invoke();
         public static void TriggerOnSceneUnloaded() => OnSceneUnloaded?.Invoke();
         public static void TriggerOnGameStateChanged(GameState previousGameState, GameState currentGameState) 

@@ -37,8 +37,10 @@ namespace Utilities.Managers
         private void OnGameSessionStarted()
         {
             startGameButton.interactable = false;
-            startButtonSequence.Restart();   
+            startButtonSequence.Restart();
+            
             scoreTextSequence.Restart();
+            scoreTMP.text = "0";
         }
     
         private void OnGameSessionStopped()
@@ -86,6 +88,7 @@ namespace Utilities.Managers
             EventBroker.OnGameSessionStarted += OnGameSessionStarted;
             EventBroker.OnGameSessionStopped += OnGameSessionStopped;
             EventBroker.OnScoreChanged += OnScoreChanged;
+            
             startButtonSequence = SetStartButtonSequence();
             scoreTextSequence = SetTMPSequence(scoreTMP, scoreTextAnimationDuration);
         }

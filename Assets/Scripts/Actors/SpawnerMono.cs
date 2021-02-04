@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Actors.Enemies;
 using DTOs;
 using Interface;
 using ScriptableObjects;
+using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using Utilities;
 using Utilities.BaseClasses;
 using Utilities.Managers;
@@ -12,30 +15,62 @@ using Utilities.ObjectPool;
 
 namespace Actors
 {
-    public abstract class SpawnerMono : EnemyBase, IMoveToPointSubscriber
+    public abstract class SpawnerMono : EnemyBase
     {
+        [SerializeField] protected List<WaveConfiguration> EnemySpawnSequence;
         [SerializeField] protected Transform spawnPoint;
         protected ObjectPool pool;
         protected PositionPointsManager positionsManager;
+        protected List<WaveConfiguration> enemyPool;
 
         protected virtual void Awake()
         {
-            positionsManager = GameManager.PositionManager;
-            EventBroker.TriggerOnSpawnerRegistering();
-            EventBroker.OnGameSessionStarted += OnGameSessionStarted;
             pool = GameManager.Pool;
         }
-        
-        protected abstract void OnGameSessionStarted();
 
-        protected override void OnDisable()
+        protected virtual void OnEnable()
         {
-            base.OnDisable();
-            EventBroker.OnGameSessionStarted -= OnGameSessionStarted;
+            positionsManager = GameManager.PositionManager;
+            EventBroker.TriggerOnSpawnerRegistering();
+            enemyPool = EnemySpawnSequence;
         }
 
-        public abstract void InitializeMoving(PositionPointsManager positionManager);
+        protected virtual void StartSpawningWaves()
+        {
+            if (enemyPool.Any())
+            {
+                StartCoroutine(enemyPool[0].spawnInSequence 
+                    ? SpawnEnemySequence(enemyPool[0]) 
+                    : SpawnEnemySequenceRandom(enemyPool[0]));
+            }
+        }
 
-        public abstract void FreePositionAvailable(PositionPoint targetPosition);
+        protected virtual IEnumerator SpawnEnemySequenceRandom(WaveConfiguration waveConfiguration)
+        {
+            //TODO: write this method
+            yield return null;
+        }
+
+        protected virtual IEnumerator SpawnEnemySequence(WaveConfiguration waveConfiguration)
+        {
+            yield return new WaitForSeconds(waveConfiguration.initialDelay);
+
+            foreach (var sequence in waveConfiguration.EnemiesToSpawn)
+            {
+                var enemyToSpawn = sequence.enemyPrefab.gameObject;
+                for (int i = 0; i < sequence.spawnTimes; i++)
+                {
+                    var spawnedEnemy = pool.GetFromPool(enemyToSpawn, spawnPoint.position, quaternion.identity);
+                    
+                    var enemyComponent = spawnedEnemy.GetComponent<Enemy>();
+                    if (enemyComponent)
+                    {
+                        enemyComponent.InitializeMoving(positionsManager);
+                    }
+                    
+                    yield return new WaitForSeconds(waveConfiguration.timeBetweenSpawns);
+                }
+            }
+        }
     }
 }

@@ -3,7 +3,6 @@ using DTOs;
 using Enumerations;
 using Interface;
 using UnityEngine;
-using Utilities;
 using Utilities.BaseClasses;
 using Utilities.Managers;
 
@@ -20,11 +19,17 @@ namespace Actors.Enemies
         [Header("Assignables")]
         [SerializeField] private Transform bodyPivot;
         [SerializeField] private EnemyGun gun;
+        [SerializeField] private EnemyDeathHandler deathHandler;
     
         [HideInInspector] public bool onShootPosition;
         private MoverToPosition mover;
         private Tween onPositionRoute;
 #pragma warning restore 649
+
+        private void Awake()
+        {
+            deathHandler.scoreValue = scoreValue;
+        }
 
         public void InitializeMoving(PositionPointsManager positionManager)
         {
@@ -53,9 +58,8 @@ namespace Actors.Enemies
             gun.CanShoot = true;
         }
 
-        protected override void OnDisable()
+        protected void OnDisable()
         {
-            base.OnDisable();
             onShootPosition = false;
             onPositionRoute.Kill();
             transform.position = new Vector3(0, 0, 0);

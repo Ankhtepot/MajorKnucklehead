@@ -177,6 +177,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca87dd096ad41d443b116e7174df2345, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  scoreValue: 0
 --- !u!114 &4199308929815059540
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -189,9 +190,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 250eb03423f48354d8c11f19828b350f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  scoreValue: 10
   routeMargin: 1.1
   bodyPivot: {fileID: 176430186561777812}
   gun: {fileID: 6266664398234522803}
+  deathHandler: {fileID: 176430186388044962}
   onShootPosition: 0
 --- !u!114 &2305159044503432539
 MonoBehaviour:

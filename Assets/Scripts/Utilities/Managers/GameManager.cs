@@ -86,7 +86,7 @@ namespace Utilities.Managers
             StartCoroutine(PostSessionRoutine(true));
         }
 
-        private void ProcessAllEnemiesInLevelKilled()
+        private void ProcessWinCondition()
         {
             print("[Game Manager] All enemies killed, game session should end.");
             StartCoroutine(PostSessionRoutine());
@@ -109,7 +109,7 @@ namespace Utilities.Managers
         {
             EventBroker.OnGameSessionStartRequested -= gameSessionManager.StartGameSession;
             EventBroker.OnGameSessionStopRequested -= StopGameSession;
-            EventBroker.OnAllEnemiesInLevelKilled -= ProcessAllEnemiesInLevelKilled;
+            EventBroker.OnWinConditionMet -= ProcessWinCondition;
             EventBroker.OnSceneLoaded -= OnSceneLoaded;
         }
 
@@ -123,7 +123,7 @@ namespace Utilities.Managers
         
             EventBroker.OnGameSessionStartRequested += gameSessionManager.StartGameSession;
             EventBroker.OnGameSessionStopRequested += StopGameSession;
-            EventBroker.OnAllEnemiesInLevelKilled += ProcessAllEnemiesInLevelKilled;
+            EventBroker.OnWinConditionMet += ProcessWinCondition;
             EventBroker.OnSceneLoaded += OnSceneLoaded;
         
             ChangeGameState(GameState.PreGameSession);

@@ -4,7 +4,6 @@ using UnityEngine;
 using Utilities.Extensions;
 using Utilities.Managers;
 using Utilities.ObjectPool;
-using Zenject;
 
 //Fireball Games * * * PetrZavodny.com
 

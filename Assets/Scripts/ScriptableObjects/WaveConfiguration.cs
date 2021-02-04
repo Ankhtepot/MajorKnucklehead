@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace ScriptableObjects
 {
-    [CreateAssetMenu(fileName = "Enemy Wave Configuration", menuName = "Scriptable Objects/Wave Configuration", order = 0)]
+    [CreateAssetMenu(fileName = "Enemy Wave Configuration", menuName = "Configurations/Wave Configuration", order = 0)]
     public class WaveConfiguration : ScriptableObject
     {
         public List<EnemySequenceSlot> EnemiesToSpawn;

@@ -9,6 +9,7 @@ namespace Actors.Enemies
     public class EnemyDeathHandler : DeathHandlerBase, IPoolNeedy
     {
 #pragma warning disable 649
+        public int scoreValue;
 #pragma warning restore 649
 
         private void OnEnable()
@@ -18,6 +19,7 @@ namespace Actors.Enemies
 
         public override void HandleDeath()
         {
+            EventBroker.TriggerOnScoreGained(scoreValue);
             ReturnToPool();
         }
     

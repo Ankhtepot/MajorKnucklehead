@@ -1,82 +1,84 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Markup;
 using DTOs;
 using Enumerations;
 using Interface;
 using ScriptableObjects;
 using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using Utilities.Managers;
 
 //Fireball Games * * * PetrZavodny.com
 
 namespace Actors.Enemies
 {
-    public class MotherShipSpawner : SpawnerMono
+    public class MotherShipSpawner : MovingSpawnerMono
     {
 #pragma warning disable 649
-        [SerializeField] private List<WaveConfiguration> EnemySpawnSequence;
-
         [Header("Assignables")]
         [SerializeField] private MotherShipDeathHandler deathHandler;
-
-        private List<WaveConfiguration> enemyPool;
+        
         private int _currentWaveConfigurationIndex;
+        private bool _isOnSpawningPosition;
 #pragma warning restore 649
     
-        public override void InitializeMoving(PositionPointsManager positionManager)
-        {
-            positionManager.RequestFreePositionWhenAvailable(this, PositionPointType.MotherShipAtPlayer);
-        }
-
-        public override void FreePositionAvailable(PositionPoint targetPosition)
-        {
-            var mover = GetComponent<MoverToPosition>();
-            mover.StartMovingToPosition(targetPosition);
-        }
-
         protected override void Awake()
         {
             base.Awake();
             
             deathHandler.pool = pool;
-            enemyPool = new List<WaveConfiguration>();
+            deathHandler.scoreValue = scoreValue;
         }
 
-        protected override void OnGameSessionStarted()
+        protected override void OnEnable()
         {
-            enemyPool = EnemySpawnSequence;
-        
-            if (enemyPool.Any())
+            base.OnEnable();
+            _isOnSpawningPosition = false;
+            TriggerMotherShipMove();
+        }
+
+        public override void InitializeMoving(PositionPointsManager positionManager)
+        {
+            if (_isOnSpawningPosition)
             {
-                StartCoroutine(enemyPool[0].spawnInSequence 
-                    ? SpawnEnemySequence(enemyPool[0]) 
-                    : SpawnEnemySequenceRandom(enemyPool[0]));
+                positionManager.RequestFreePositionWhenAvailable(this, PositionPointType.MotherShipAtPlayer);
+                return;
             }
+            
+            positionManager.RequestFreePositionWhenAvailable(this, PositionPointType.MotherShipFromPortal);
         }
 
-        private IEnumerator SpawnEnemySequenceRandom(WaveConfiguration waveConfiguration)
+        public override void FreePositionAvailable(PositionPoint targetPosition)
         {
-            //TODO: write this method
-            yield return null;
-        }
-
-        private IEnumerator SpawnEnemySequence(WaveConfiguration waveConfiguration)
-        {
-            yield return new WaitForSeconds(waveConfiguration.initialDelay);
-
-            foreach (var sequence in waveConfiguration.EnemiesToSpawn)
+            if (!_isOnSpawningPosition)
             {
-                var enemyToSpawn = sequence.enemyPrefab.gameObject;
-                for (int i = 0; i < sequence.spawnTimes; i++)
-                {
-                    var spawnedEnemy = pool.GetFromPool(enemyToSpawn, spawnPoint.position, quaternion.identity);
-                    spawnedEnemy.GetComponent<Enemy>().InitializeMoving(positionsManager);
-                    yield return new WaitForSeconds(waveConfiguration.timeBetweenSpawns);
-                }
+                mover.OnPositionReached.AddListener(OnSpawningPositionReached);
             }
+            else
+            {
+                mover.OnPositionReached.RemoveListener(OnSpawningPositionReached);  // MotherShip will move now to player, no more enemy spawning
+            }
+            
+            mover.StartMovingToPosition(targetPosition);
+        }
+
+        private void OnSpawningPositionReached()
+        {
+            _isOnSpawningPosition = true;
+            base.StartSpawningWaves();
+        }
+
+        protected override IEnumerator SpawnEnemySequenceRandom(WaveConfiguration waveConfiguration)
+        {
+            yield return base.SpawnEnemySequenceRandom(waveConfiguration);
+        }
+
+        protected override IEnumerator SpawnEnemySequence(WaveConfiguration waveConfiguration)
+        {
+            yield return base.SpawnEnemySequence(waveConfiguration);
 
             if (enemyPool.Count - 1 > _currentWaveConfigurationIndex)
             {
@@ -93,7 +95,7 @@ namespace Actors.Enemies
 
         private void TriggerMotherShipMove()
         {
-            print("Mother Ship starts approaching the player");
+            print("Mother Ship starts approaching the " + (!_isOnSpawningPosition ? "spawning position" : "player") + ".");
             InitializeMoving(positionsManager);
         }
     }

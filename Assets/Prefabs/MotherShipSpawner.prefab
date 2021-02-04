@@ -60,7 +60,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5985060869679013504}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 9, z: 10}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 5985060869532406858}
@@ -81,9 +81,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scoreValue: 100
-  spawnPoint: {fileID: 5985060870371938301}
   EnemySpawnSequence:
   - {fileID: 11400000, guid: a111a2f90aad7024c85fd6e1dedba104, type: 2}
+  spawnPoint: {fileID: 5985060870371938301}
+  mover: {fileID: 5985060869679013517}
   deathHandler: {fileID: 5985060869679013518}
 --- !u!114 &5985060869679013517
 MonoBehaviour:
@@ -97,7 +98,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d1287cf05bc48e3bd478d160f2e718c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 1
+  moveSpeed: 2
   OnPositionReached:
     m_PersistentCalls:
       m_Calls: []
@@ -143,6 +144,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8eabe8cf53d4448ab8f02a640507f93b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  scoreValue: 0
 --- !u!1 &5985060870371938300
 GameObject:
   m_ObjectHideFlags: 0
